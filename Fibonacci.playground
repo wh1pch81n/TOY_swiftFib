@@ -1,0 +1,47 @@
+import UIKit
+
+class Fibonacci {
+    class var sharedInstance: Fibonacci {
+    struct __ {
+        static var instance: Fibonacci?
+        static var predicate: dispatch_once_t = 0
+        }
+        dispatch_once(&__.predicate) {
+            __.instance = Fibonacci()
+        }
+        return __.instance!
+    }
+    
+    /*slow literal implementation*/
+    func fib(n:UInt64) -> UInt64 {
+        if n==1 || n==0 {
+            return 1
+        }
+        return fib(n-1) + fib(n-2)
+    }
+    
+    /*Faster implmentation with array usage*/
+    var fnarr:Array<UInt> = [0,1]
+    func fib2(n:UInt) -> UInt{
+        if n < UInt(fnarr.count) {
+            return fnarr[Int(n)]
+        }
+        
+        for var i:UInt = UInt(fnarr.count); i <= n; ++i {
+            fnarr.append(UInt(fnarr[fnarr.count-1] + fnarr[fnarr.count-2]))
+        }
+        return fnarr[fnarr.count-1]
+    }
+}
+
+
+
+//for i:UInt64 in 0...15
+//{
+//    println("\(i)_fib1 \(fib(i))")
+//}
+
+
+for i:UInt in 0...92 {
+    println("\(i)_fib2 \(Fibonacci.sharedInstance.fib2(i))")
+}
